@@ -1,14 +1,16 @@
 FROM centos:6
 
-RUN yum -y install perl sysstat nc libaio python-setuptools wget patch sudo 
-RUN useradd -mUs /bin/bash -p '$6$iKh435EZ$XF4mLsy9/hQKmeyE8pbSddiR7QfHT0Mo78fb0LYx6FaxCoJimKlUoCxWflrfgACG.dJxH0ZUdULp/5VOXdSFh.' user 
-RUN easy_install supervisor && mkdir -p /var/log/supervisor
-RUN mkdir /tmp/zcs && cd /tmp/zcs && wget -O- http://files2.zimbra.com/downloads/8.0.7_GA/zcs-8.0.7_GA_6021.RHEL6_64.20140408123911.tgz | tar xz && chown -R user. /tmp/zcs
 ADD config.defaults /tmp/zcs/config.defaults
 ADD utilfunc.sh.patch /tmp/zcs/utilfunc.sh.patch
-RUN cd /tmp/zcs/zcs-* && patch util/utilfunc.sh </tmp/zcs/utilfunc.sh.patch
-RUN cd /tmp/zcs/zcs-* && ./install.sh -s --platform-override /tmp/zcs/config.defaults
-RUN mv /opt/zimbra /opt/.zimbra
+
+RUN yum -y install perl sysstat nc libaio python-setuptools wget patch sudo  && \
+	useradd -mUs /bin/bash -p '$6$iKh435EZ$XF4mLsy9/hQKmeyE8pbSddiR7QfHT0Mo78fb0LYx6FaxCoJimKlUoCxWflrfgACG.dJxH0ZUdULp/5VOXdSFh.' user && \
+	easy_install supervisor && mkdir -p /var/log/supervisor && \
+	mkdir -p /tmp/zcs && \
+	cd /tmp/zcs && wget -O- http://files2.zimbra.com/downloads/8.0.7_GA/zcs-8.0.7_GA_6021.RHEL6_64.20140408123911.tgz | tar xz && chown -R user. /tmp/zcs && \
+	cd /tmp/zcs/zcs-* && patch util/utilfunc.sh </tmp/zcs/utilfunc.sh.patch && \
+	cd /tmp/zcs/zcs-* && ./install.sh -s --platform-override /tmp/zcs/config.defaults && \
+	mv /opt/zimbra /opt/.zimbra
 
 VOLUME ["/opt/zimbra"]
 
