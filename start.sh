@@ -18,18 +18,18 @@ touch /opt/zimbra/installed-by-docker
 
 #User with ca
 echo 'create shareuser1'
-/opt/zimbra/bin/zmprov ca shareuser1@`hostname -f` user1
+/opt/zimbra/bin/zmprov ca shareuser1@`hostname -f` useruser1
 echo 'create shareuser2'
-/opt/zimbra/bin/zmprov ca shareuser2@`hostname -f` user2
+/opt/zimbra/bin/zmprov ca shareuser2@`hostname -f` useruser2
 echo 'create shareuser3'
-/opt/zimbra/bin/zmprov ca shareuser3@`hostname -f` user3
+/opt/zimbra/bin/zmprov ca shareuser3@`hostname -f` useruser3
 echo 'create shareuser4'
-/opt/zimbra/bin/zmprov ca shareuser4@`hostname -f` user4
+/opt/zimbra/bin/zmprov ca shareuser4@`hostname -f` useruser4
 
 echo 'create stduser1'
-/opt/zimbra/bin/zmprov ca stduser1@`hostname -f` std1
+/opt/zimbra/bin/zmprov ca stduser1@`hostname -f` stdstdstd1
 echo 'create stduser2'
-/opt/zimbra/bin/zmprov ca stduser2@`hostname -f` std2
+/opt/zimbra/bin/zmprov ca stduser2@`hostname -f` stdstdstd2
 
 
 supervisord -c /etc/supervisord.conf
