@@ -31,5 +31,21 @@ echo 'create stduser1'
 echo 'create stduser2'
 /opt/zimbra/bin/zmprov ca stduser2@`hostname -f` stdstdstd2
 
+#set calendar permissions
+/opt/zimbra/bin/zmmailbox -z -m shareuser1 modifyFolderGrant /Calendar account shareuser2 rwixd
+/opt/zimbra/bin/zmmailbox -z -m shareuser1 modifyFolderGrant /Calendar account shareuser3 rwixd
+/opt/zimbra/bin/zmmailbox -z -m shareuser1 modifyFolderGrant /Calendar account shareuser4 rwixd
+
+/opt/zimbra/bin/zmmailbox -z -m shareuser2 modifyFolderGrant /Calendar account shareuser1 rwixd
+/opt/zimbra/bin/zmmailbox -z -m shareuser2 modifyFolderGrant /Calendar account shareuser3 rwixd
+/opt/zimbra/bin/zmmailbox -z -m shareuser2 modifyFolderGrant /Calendar account shareuser4 rwixd
+
+/opt/zimbra/bin/zmmailbox -z -m shareuser3 modifyFolderGrant /Calendar account shareuser1 rwixd
+/opt/zimbra/bin/zmmailbox -z -m shareuser3 modifyFolderGrant /Calendar account shareuser2 rwixd
+/opt/zimbra/bin/zmmailbox -z -m shareuser3 modifyFolderGrant /Calendar account shareuser4 rwixd
+
+/opt/zimbra/bin/zmmailbox -z -m shareuser4 modifyFolderGrant /Calendar account shareuser1 rwixd
+/opt/zimbra/bin/zmmailbox -z -m shareuser4 modifyFolderGrant /Calendar account shareuser2 rwixd
+/opt/zimbra/bin/zmmailbox -z -m shareuser4 modifyFolderGrant /Calendar account shareuser3 rwixd
 
 supervisord -c /etc/supervisord.conf
