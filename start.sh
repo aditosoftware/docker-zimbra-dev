@@ -16,12 +16,20 @@ mv /opt/zimbra/.install_history{,.orig}
 touch /opt/zimbra/installed-by-docker
 )
 
-echo 'create user1'
-/opt/zimbra/bin/zmprov ca user1@`hostname -f` password
-echo 'create user2'
-/opt/zimbra/bin/zmprov ca user2@`hostname -f` password
+#User with ca
+echo 'create shareuser1'
+/opt/zimbra/bin/zmprov ca shareuser1@`hostname -f` user1
+echo 'create shareuser2'
+/opt/zimbra/bin/zmprov ca shareuser2@`hostname -f` user2
+echo 'create shareuser3'
+/opt/zimbra/bin/zmprov ca shareuser3@`hostname -f` user3
+echo 'create shareuser4'
+/opt/zimbra/bin/zmprov ca shareuser4@`hostname -f` user4
 
-#exec /usr/sbin/sshd -D -e
+echo 'create stduser1'
+/opt/zimbra/bin/zmprov ca stduser1@`hostname -f` std1
+echo 'create stduser2'
+/opt/zimbra/bin/zmprov ca stduser2@`hostname -f` std2
 
-#"/opt/zimbra/bin/zmcontrol start" zimbra 
+
 supervisord -c /etc/supervisord.conf
