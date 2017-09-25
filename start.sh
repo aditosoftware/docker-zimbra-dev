@@ -1,7 +1,50 @@
 #!/bin/sh
 
+HOSTNAME=$(hostname -s)
+DOMAIN=$(hostname -d)
+CONTAINERIP=$(ip addr | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1  -d'/')
+RANDOMHAM=$(date +%s|sha256sum|base64|head -c 10)
+RANDOMSPAM=$(date +%s|sha256sum|base64|head -c 10)
+RANDOMVIRUS=$(date +%s|sha256sum|base64|head -c 10)
+
+## Installing the DNS Server ##
+echo "Configuring DNS Server"
+cat <<EOF >/etc/named.conf
+zone "$DOMAIN" {
+        type master;
+        file "/etc/db.$DOMAIN";
+};
+EOF
+touch /etc/db.$DOMAIN
+cat <<EOF >/etc/db.$DOMAIN
+\$TTL  604800
+@      IN      SOA    ns1.$DOMAIN. root.localhost. (
+                              2        ; Serial
+                        604800        ; Refresh
+                          86400        ; Retry
+                        2419200        ; Expire
+                        604800 )      ; Negative Cache TTL
+;
+     IN      NS      ns1.$DOMAIN.
+     IN      A      $CONTAINERIP
+     IN      MX     10     $HOSTNAME.$DOMAIN.
+$HOSTNAME     IN      A      $CONTAINERIP
+ns1     IN      A      $CONTAINERIP
+mail     IN      A      $CONTAINERIP
+pop3     IN      A      $CONTAINERIP
+imap     IN      A      $CONTAINERIP
+imap4     IN      A      $CONTAINERIP
+smtp     IN      A      $CONTAINERIP
+EOF
+
+# Set DNS Server to localhost
+echo "nameserver 127.0.0.1" > /etc/resolv.conf
+echo "nameserver 8.8.8.8" >> /etc/resolv.conf
+
+service named start
+
 ls /opt/zimbra/installed-by-docker || (
-mkdir /opt/zimbra
+mkdir -p /opt/zimbra
 chown zimbra. /opt/zimbra
 cp -a -r --sparse=always /opt/.zimbra/{.*,*} /opt/zimbra/ && rm -rf /opt/.zimbra
 sed -i "s/XHOSTNAMEX/`hostname -f`/" /tmp/zcs/config.defaults

@@ -5,7 +5,7 @@ ADD utilfunc.sh.patch /tmp/zcs/utilfunc.sh.patch
 ADD start.sh /start.sh
 ADD supervisord.conf /etc/supervisord.conf
 
-RUN yum -y install perl sysstat nc libaio python-setuptools wget patch sudo  && \
+RUN yum -y install perl sysstat nc libaio python-setuptools wget patch sudo bind  && \
 	useradd -mUs /bin/bash -p '$6$iKh435EZ$XF4mLsy9/hQKmeyE8pbSddiR7QfHT0Mo78fb0LYx6FaxCoJimKlUoCxWflrfgACG.dJxH0ZUdULp/5VOXdSFh.' user && \
 	easy_install supervisor && mkdir -p /var/log/supervisor && \
 	mkdir -p /tmp/zcs && \
@@ -17,18 +17,6 @@ RUN yum -y install perl sysstat nc libaio python-setuptools wget patch sudo  && 
 
 VOLUME ["/opt/zimbra"]
 
-EXPOSE 22
-EXPOSE 25
-EXPOSE 456
-EXPOSE 587
-EXPOSE 110
-EXPOSE 143
-EXPOSE 993
-EXPOSE 995
-EXPOSE 80
-EXPOSE 443
-EXPOSE 8080
-EXPOSE 8443
-EXPOSE 7071
+EXPOSE 22 25 456 587 110 143 993 995 80 443 8080 8443 7071
 
 CMD ["/start.sh"]

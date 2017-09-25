@@ -12,5 +12,11 @@ ADMIN Port: 7071
 
 # Users
 admin:docker
-user1:password
-user2:password
+stduser1:stdstdstd1
+stduser2:stdstdstd2
+
+#### User with shared calender
+shareuser1:useruser1
+shareuser2:useruser2
+shareuser3:useruser3
+shareuser4:useruser4
