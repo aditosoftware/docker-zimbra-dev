@@ -1,22 +1,29 @@
-FROM centos:6
+#################################################################
+# Dockerfile to build Zimbra Collaboration 8.7.11 container images
+# Based on Ubuntu 16.04
+# Created by Jorge de la Cruz
+#################################################################
+FROM ubuntu:16.04
 
-ADD config.defaults /tmp/zcs/config.defaults
-ADD utilfunc.sh.patch /tmp/zcs/utilfunc.sh.patch
-ADD start.sh /start.sh
-ADD supervisord.conf /etc/supervisord.conf
+RUN echo "resolvconf resolvconf/linkify-resolvconf boolean false" | debconf-set-selections
 
-RUN yum -y install perl sysstat nc libaio python-setuptools wget patch sudo bind  && \
-	useradd -mUs /bin/bash -p '$6$iKh435EZ$XF4mLsy9/hQKmeyE8pbSddiR7QfHT0Mo78fb0LYx6FaxCoJimKlUoCxWflrfgACG.dJxH0ZUdULp/5VOXdSFh.' user && \
-	easy_install supervisor && mkdir -p /var/log/supervisor && \
-	mkdir -p /tmp/zcs && \
-	cd /tmp/zcs && wget -O- http://files2.zimbra.com/downloads/8.0.7_GA/zcs-8.0.7_GA_6021.RHEL6_64.20140408123911.tgz | tar xz && chown -R user. /tmp/zcs && \
-	cd /tmp/zcs/zcs-* && patch util/utilfunc.sh </tmp/zcs/utilfunc.sh.patch && \
-	cd /tmp/zcs/zcs-* && ./install.sh -s --platform-override /tmp/zcs/config.defaults && \
-	mv /opt/zimbra /opt/.zimbra && \
-	chmod +x /start.sh
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -y install \
+  wget \
+  dialog \
+  openssh-client \
+  software-properties-common \
+  bind9 bind9utils bind9-doc dnsutils \
+  net-tools \
+  sudo \
+  rsyslog \
+  unzip && \
+  echo "Downloading Zimbra Collaboration 8.7.11" && mkdir -p /opt/zimbra-install && \
+  wget -O /opt/zimbra-install/zimbra-zcs-8.7.11.tar.gz https://files.zimbra.com/downloads/8.7.11_GA/zcs-8.7.11_GA_1854.UBUNTU16_64.20170531151956.tgz
 
 VOLUME ["/opt/zimbra"]
 
-EXPOSE 22 25 456 587 110 143 993 995 80 443 8080 8443 7071
+EXPOSE 22 25 465 587 110 143 993 995 80 443 8080 8443 7071
 
-CMD ["/start.sh"]
+COPY opt /opt/
+
+CMD ["/bin/bash", "/opt/start.sh", "-d"]
