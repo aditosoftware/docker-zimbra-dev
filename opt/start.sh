@@ -8,6 +8,11 @@ RANDOMHAM=$(date +%s|sha256sum|base64|head -c 10)
 RANDOMSPAM=$(date +%s|sha256sum|base64|head -c 10)
 RANDOMVIRUS=$(date +%s|sha256sum|base64|head -c 10)
 
+#fix gpg Server
+#gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 9BE6ED79
+apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 9BE6ED79
+gpg -a --export 9BE6ED79 | apt-key add -
+
 ## Installing the DNS Server ##
 echo "Installing DNS Server"
 #sudo apt-get update && sudo sudo apt-get install -y bind9 bind9utils bind9-doc dnsutils
@@ -71,7 +76,7 @@ imap     IN      A      $CONTAINERIP
 imap4     IN      A      $CONTAINERIP
 smtp     IN      A      $CONTAINERIP
 EOF
-sudo service bind9 start 
+sudo service bind9 start
 
 ##Creating the Zimbra Collaboration Config File ##
 touch /opt/zimbra-install/installZimbraScript
