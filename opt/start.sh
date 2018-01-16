@@ -9,8 +9,8 @@ RANDOMSPAM=$(date +%s|sha256sum|base64|head -c 10)
 RANDOMVIRUS=$(date +%s|sha256sum|base64|head -c 10)
 
 #fix gpg Server
-#gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 9BE6ED79
-apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 9BE6ED79
+gpg --keyserver hkp://keyserver.ubuntu.com --recv-keys 9BE6ED79
+#apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 9BE6ED79
 gpg -a --export 9BE6ED79 | apt-key add -
 
 ## Installing the DNS Server ##
@@ -32,12 +32,12 @@ forwarders {
 auth-nxdomain no; # conform to RFC1035
 #listen-on-v6 { any; };
 };
-EOF
-cat <<EOF >/etc/resolv.conf
-search $DOMAIN
-nameserver 127.0.0.1
-nameserver 8.8.8.8
-EOF
+# EOF
+# cat <<EOF >/etc/resolv.conf
+# search $DOMAIN
+# nameserver 127.0.0.1
+# nameserver 8.8.8.8
+# EOF
 
 # cat <<EOF >/etc/hosts
 # 127.0.0.1       localhost
