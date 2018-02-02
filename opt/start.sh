@@ -37,24 +37,7 @@ zone "$DOMAIN" {
         type master;
         file "/etc/bind/db.$DOMAIN";
 };
-
-EOF 
-# EOF
-# cat <<EOF >/etc/resolv.conf
-# search $DOMAIN
-# nameserver 127.0.0.1
-# nameserver 8.8.8.8
-# EOF
-
-# cat <<EOF >/etc/hosts
-# 127.0.0.1       localhost
-# ::1     localhost ip6-localhost ip6-loopback
-# fe00::0 ip6-localnet
-# ff00::0 ip6-mcastprefix
-# ff02::1 ip6-allnodes
-# ff02::2 ip6-allrouters
-# $CONTAINERIP $HOSTNAME $DOMAIN
-# EOF
+EOF
 touch /etc/bind/db.$DOMAIN
 cat <<EOF >/etc/bind/db.$DOMAIN
 \$TTL  604800
