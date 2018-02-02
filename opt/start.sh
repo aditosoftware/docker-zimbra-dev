@@ -32,6 +32,13 @@ forwarders {
 auth-nxdomain no; # conform to RFC1035
 #listen-on-v6 { any; };
 };
+
+zone "$DOMAIN" {
+        type master;
+        file "/etc/bind/db.$DOMAIN";
+};
+
+EOF 
 # EOF
 # cat <<EOF >/etc/resolv.conf
 # search $DOMAIN
@@ -48,13 +55,6 @@ auth-nxdomain no; # conform to RFC1035
 # ff02::2 ip6-allrouters
 # $CONTAINERIP $HOSTNAME $DOMAIN
 # EOF
-
-cat <<EOF >/etc/bind/named.conf.local
-zone "$DOMAIN" {
-        type master;
-        file "/etc/bind/db.$DOMAIN";
-};
-EOF
 touch /etc/bind/db.$DOMAIN
 cat <<EOF >/etc/bind/db.$DOMAIN
 \$TTL  604800
